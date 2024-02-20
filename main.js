@@ -1,6 +1,8 @@
 
 const API_KEY = `43e023c4728c4c2191bb719a89398da5`
 let news = [];
+let keyword = "아이유";
+let PAGE_SIZE = 20;
 
 const getLastestNews = async () => {
     const url = new URL (`https://mgson-news-times.netlify.app/top-headlines?${keyword}&country=kr&pageSize=${PAGE_SIZE}`);
@@ -12,5 +14,3 @@ const getLastestNews = async () => {
 }
 
 getLastestNews()
-
-https://mgson-news-times.netlify.app/
