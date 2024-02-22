@@ -36,3 +36,66 @@
 .news {
     border-bottom: 2px solid gray;
 }
+
+
+.side-menu {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: burlywood;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+  }
+  .side-menu-list button {
+    margin: 5px;
+    border: none;
+    background: none;
+    width: 120px;
+  }
+  
+  .side-menu closeBtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+    border: none;
+    background: none;
+  }
+  
+  .side-menu-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .side-menu-list button:hover {
+    background-color: beige;
+    border-radius: 3px;
+  }
+
+  .hamBtn {
+    display: none;
+}
+
+.icon-container {
+    display: flex;
+}
+
+
+
+@media screen and (max-width: 450px) {
+    .side-menu {padding-top: 15px;}
+    .side-menu a {font-size: 18px;}
+    .menus {
+        display: none;
+    }
+    .hamBtn {
+        display: block;
+        margin-right: 10px; /* 아이콘 간격 조절 */
+    }
+  }
