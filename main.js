@@ -1,18 +1,43 @@
 
 const API_KEY = `43e023c4728c4c2191bb719a89398da5`
 let newsList = [];
-let keyword = "아이유";
+// let keyword = "아이유";
 let PAGE_SIZE = 20;
+const menus = document.querySelectorAll(".menus button, .side-menu-list button"); // ".side-menu-list button", 
+menus.forEach(menu=>menu.addEventListener("click",(event)=>getNewsByCategory(event)))
 
 const getLatestNews = async () => {
-    const url = new URL (`https://mgson-news-times.netlify.app/top-headlines?${keyword}&country=kr&pageSize=${PAGE_SIZE}`);
-    // const url = new URL (`https://newsapi.org/v2/top-headlines?country=us&apiKey=${API_KEY}`);
+    const url = new URL (`https://mgson-news-times.netlify.app/top-headlines?&country=kr&pageSize=${PAGE_SIZE}`);
+    // const url = new URL (`https://newsapi.org/v2/top-headlines?country=kr&apiKey=${API_KEY}`);
     // console.log("uuu", url)
     const response = await fetch (url)
     const data = await response.json()
     newsList = data.articles;
     render();
     console.log("ddd", newsList);
+}
+
+const getNewsByCategory = async (event) => {
+    const category = event.target.textContent.toLowerCase()
+    console.log("Category", category)
+    const url = new URL (`https://mgson-news-times.netlify.app/top-headlines?&country=kr&category=${category}&pageSize=${PAGE_SIZE}`);
+    // const url = new URL(`https://newsapi.org/v2/top-headlines?country=kr&category=${category}&apiKey=${API_KEY}`)
+    const response = await fetch(url)
+    const data = await response.json();
+    console.log("ddd", data);
+    newsList = data.articles;
+    render();
+}
+
+const getNewsByKeyword = async () => {
+    const keyword = document.getElementById("search-input").value
+    const url = new URL (`https://mgson-news-times.netlify.app/top-headlines?&country=kr&q=${keyword}&pageSize=${PAGE_SIZE}`);
+    // const url = new URL(`https://newsapi.org/v2/top-headlines?country=kr&q=${keyword}&apiKey=${API_KEY}`)
+    const response = await fetch(url)
+    const data = await response.json();
+    console.log("ddd", data);
+    newsList = data.articles;
+    render();
 }
 
 const render = ()=>{
@@ -59,6 +84,10 @@ const openSearchBox = () => {
 
 
 getLatestNews()
+
+//1. 버튼들에 클릭이벤트 주기
+//2. 카테고리별 뉴스 가져오기
+//3. 그 뉴스를 보여주기
 
 
 
