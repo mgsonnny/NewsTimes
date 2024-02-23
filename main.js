@@ -5,39 +5,48 @@ let newsList = [];
 let PAGE_SIZE = 20;
 const menus = document.querySelectorAll(".menus button, .side-menu-list button"); // ".side-menu-list button", 
 menus.forEach(menu=>menu.addEventListener("click",(event)=>getNewsByCategory(event)))
+let url = new URL (`https://mgson-news-times.netlify.app/top-headlines?&country=kr&pageSize=${PAGE_SIZE}`);
+
+const getNews = async () =>{
+    try{
+      const response = await fetch(url)
+      const data = await response.json();
+      if (response.status === 200){
+        if(data.articles.length === 0){
+          throw new Error("No result for this search")
+        }
+        newsList = data.articles;
+        render();
+      } else {
+        throw new Error(data.message);
+      }
+    }catch(error){
+      errorRender(error.message)
+
+    }
+    
+}
 
 const getLatestNews = async () => {
-    const url = new URL (`https://mgson-news-times.netlify.app/top-headlines?&country=kr&pageSize=${PAGE_SIZE}`);
+    url = new URL (`https://mgson-news-times.netlify.app/top-headlines?&country=kr&pageSize=${PAGE_SIZE}`);
     // const url = new URL (`https://newsapi.org/v2/top-headlines?country=kr&apiKey=${API_KEY}`);
     // console.log("uuu", url)
-    const response = await fetch (url)
-    const data = await response.json()
-    newsList = data.articles;
-    render();
-    console.log("ddd", newsList);
+    getNews()
 }
 
 const getNewsByCategory = async (event) => {
     const category = event.target.textContent.toLowerCase()
     console.log("Category", category)
-    const url = new URL (`https://mgson-news-times.netlify.app/top-headlines?&country=kr&category=${category}&pageSize=${PAGE_SIZE}`);
+    url = new URL (`https://mgson-news-times.netlify.app/top-headlines?&country=kr&category=${category}&pageSize=${PAGE_SIZE}`);
     // const url = new URL(`https://newsapi.org/v2/top-headlines?country=kr&category=${category}&apiKey=${API_KEY}`)
-    const response = await fetch(url)
-    const data = await response.json();
-    console.log("ddd", data);
-    newsList = data.articles;
-    render();
+    getNews()
 }
 
 const getNewsByKeyword = async () => {
     const keyword = document.getElementById("search-input").value
-    const url = new URL (`https://mgson-news-times.netlify.app/top-headlines?&country=kr&q=${keyword}&pageSize=${PAGE_SIZE}`);
+    url = new URL (`https://mgson-news-times.netlify.app/top-headlines?&country=kr&q=${keyword}&pageSize=${PAGE_SIZE}`);
     // const url = new URL(`https://newsapi.org/v2/top-headlines?country=kr&q=${keyword}&apiKey=${API_KEY}`)
-    const response = await fetch(url)
-    const data = await response.json();
-    console.log("ddd", data);
-    newsList = data.articles;
-    render();
+    getNews()
 }
 
 const render = ()=>{
@@ -82,6 +91,12 @@ const openSearchBox = () => {
     document.getElementById("mySidenav").style.width = "0";
   };
 
+const errorRender = (errorMessage) => {
+  const errorHTML = `<div class="alert alert-danger" role="alert">
+  ${errorMessage}
+</div>`;
+  document.getElementById("news-board").innerHTML = errorHTML
+}
 
 getLatestNews()
 
